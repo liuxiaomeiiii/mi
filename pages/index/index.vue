@@ -2,7 +2,13 @@
   <view class="content">
     <!-- 轮播图 -->
     <u-sticky bgColor="#fff">
-      <u-tabs :list="tabList" @click="tabClick" :current="current"></u-tabs>
+      <u-tabs
+        :list="tabList"
+        @click="tabClick"
+        :activeStyle="{ color: '#fd6801' }"
+        lineColor="#fd6801"
+        :current="current"
+      ></u-tabs>
     </u-sticky>
     <swiper
       :duration="500"
@@ -12,20 +18,14 @@
       circular
       style="height: 100vh"
     >
-      <swiper-item>
+      <swiper-item
+        v-for="(item, idx) in tabList"
+        :key="idx"
+        style="overflow-y: scroll"
+      >
         <u-swiper height="180" :list="list1"></u-swiper>
         <!-- 首页分类 -->
-        <u-grid :border="false" col="5">
-          <u-grid-item
-            @click="gridEvent"
-            class="grid-item"
-            v-for="(item, index) in list"
-            :key="index"
-          >
-            <image :src="item.src" style="width: 26px; height: 26px"></image>
-            <text class="grid-text">{{ item.title }}</text>
-          </u-grid-item>
-        </u-grid>
+        <category :categoryList="categoryList"></category>
         <!-- 三图广告 -->
         <three-adv :images="images"></three-adv>
 
@@ -41,14 +41,6 @@
             :good="good"
           ></goods-item>
         </div>
-      </swiper-item>
-      <swiper-item>
-        <!-- 按顺序对应第二个的内容 -->
-        2222222
-      </swiper-item>
-      <swiper-item>
-        <!-- 按顺序对应第三个的内容 -->
-        3333333
       </swiper-item>
     </swiper>
 
@@ -71,10 +63,12 @@
 </template>
 
 <script>
-import goodsItem from '../../components/common/goods-item.vue'
+import goodsItem from './components/goods-item.vue'
+import category from './components/category.vue'
 export default {
   components: {
-    goodsItem
+    goodsItem,
+    category
   },
   data() {
     return {
@@ -96,7 +90,7 @@ export default {
           name: '音乐'
         }
       ],
-      list: [
+      categoryList: [
         {
           src: '/static/images/indexnav/1.png',
           title: '新品分类'
@@ -176,6 +170,20 @@ export default {
           desc: '1.5匹变频',
           oprice: 2699,
           pprice: 1399
+        },
+        {
+          cover: '/static/images/demo/list/5.jpg',
+          title: '米家空调',
+          desc: '1.5匹变频',
+          oprice: 2699,
+          pprice: 1399
+        },
+        {
+          cover: '/static/images/demo/list/6.jpg',
+          title: '米家空调',
+          desc: '1.5匹变频',
+          oprice: 2699,
+          pprice: 1399
         }
       ]
     }
@@ -192,9 +200,6 @@ export default {
     // 切换触发的事件
     toggle(e) {
       this.current = e.detail.current
-    },
-    gridEvent(e) {
-      console.log('e', e)
     }
   }
 }
