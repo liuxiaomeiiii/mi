@@ -16,7 +16,7 @@
         >
           {{ item.name }}
         </text>
-        <view v-if="item.name != '筛选'" class="btns">
+        <view v-if="item.name !== '筛选'" class="btns">
           <view
             class="line-h0 iconfont icon-paixu-shengxu"
             :class="item.status === 1 ? 'main-text-color' : 'text-muted'"
