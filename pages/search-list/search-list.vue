@@ -7,6 +7,7 @@
         v-for="(item, index) in screen.list"
         :key="index"
         @tap="tabScreen(index, item)"
+        @click="tabClick(item.name)"
         class="sort-item"
       >
         <text
@@ -16,7 +17,7 @@
         >
           {{ item.name }}
         </text>
-        <view v-if="item.name !== '筛选'" class="btns">
+        <view v-if="item.name !== '筛选'" class="btn-wrap">
           <view
             class="line-h0 iconfont icon-paixu-shengxu"
             :class="item.status === 1 ? 'main-text-color' : 'text-muted'"
@@ -28,6 +29,13 @@
         </view>
       </view>
     </view>
+
+    <u-popup @close="show = false" mode="right" :show="show">
+      <view class="btn-wrap">
+        <button>重置</button>
+        <button>确定</button>
+      </view>
+    </u-popup>
   </view>
 </template>
 
@@ -48,7 +56,8 @@ export default {
           { name: '价格', status: 0 },
           { name: '筛选' }
         ]
-      }
+      },
+      show: true
     }
   },
   methods: {
@@ -64,14 +73,15 @@ export default {
           item.status = 0
         }
       })
-      console.log(this.screen.list)
-      console.log('item.status', item.status)
+    },
+    tabClick(name) {
+      if (name === '筛选') this.show = true
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .sort-list {
   display: flex;
   height: 40px;
@@ -91,6 +101,21 @@ export default {
         font-size: 22px;
       }
     }
+  }
+}
+
+.btn-wrap {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  button {
+    background: #fff;
+    &:last-child {
+      background: #fd6801;
+      color: #fff;
+    }
+    padding: 4px 42px;
   }
 }
 </style>
