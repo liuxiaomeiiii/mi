@@ -30,15 +30,11 @@
       </view>
     </view>
     <view class="goods-list">
-      <view class="item">
-        <image src="/static/images/demo/list/1.jpg" />
-        <view class="info">
-          <h3 class="title">真无线蓝牙耳机</h3>
-          <p class="desc">雅致简约 / 雅致简约 / 雅致简约 / 雅致简约</p>
-          <p class="price">￥ 900</p>
-          <p class="num">1948条评论 98%满意</p>
-        </view>
-      </view>
+      <goods-list
+        v-for="(item, index) in goodsList"
+        :item="item"
+        :key="index"
+      ></goods-list>
     </view>
     <u-popup @close="show = false" mode="right" :show="show">
       <view class="btn-wrap">
@@ -53,9 +49,11 @@
 </template>
 
 <script>
+import goodsList from '../../components/search/goods-list.vue'
 import searchHeader from '../../components/search/search-header.vue'
 export default {
   components: {
+    goodsList,
     searchHeader
   },
   data() {
@@ -71,7 +69,25 @@ export default {
         ]
       },
       show: false,
-      tagList: ['标签', '标签', '标签']
+      tagList: ['标签', '标签', '标签'],
+      goodsList: [
+        {
+          title: '真无线蓝牙耳机',
+          titlepic: '/static/images/demo/list/1.jpg',
+          desc: '雅致简约 / 雅致简约 / 雅致简约 / 雅致简约',
+          pprice: 900,
+          comment_num: 1300,
+          good_num: '98%'
+        },
+        {
+          title: '真无线蓝牙耳机',
+          titlepic: '/static/images/demo/list/1.jpg',
+          desc: '雅致简约 / 雅致简约 / 雅致简约 / 雅致简约',
+          pprice: 900,
+          comment_num: 1300,
+          good_num: '98%'
+        }
+      ]
     }
   },
   methods: {
@@ -132,38 +148,6 @@ export default {
 }
 .goods-list {
   padding: 0 8px;
-  .item {
-    display: flex;
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-    image {
-      width: 150px;
-      height: 150px;
-    }
-    .info {
-      padding-left: 8px;
-      .title {
-        font-size: 16px;
-        font-weight: 700;
-        padding: 4px 0 12px 0;
-      }
-      .desc,
-      .num {
-        color: #6c757d;
-        font-size: 12px;
-        &.num {
-          transform: scale(0.8);
-          margin-left: -24px;
-        }
-      }
-      .price {
-        font-weight: 700;
-        font-size: 18px;
-        padding: 4px 0;
-        color: #fd6801;
-      }
-    }
-  }
 }
 ::v-deep .u-transition {
   padding: 12px;
