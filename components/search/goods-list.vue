@@ -6,7 +6,7 @@
       <p class="desc">{{ item.desc }}</p>
       <p class="price">￥ {{ item.pprice }}</p>
       <p class="num">
-        {{ item.sgcomment_num }} 条评论 {{ item.good_num }} 满意
+        {{ item.comment_num }} 条评论 {{ item.good_num }} 满意
       </p>
     </view>
   </view>
