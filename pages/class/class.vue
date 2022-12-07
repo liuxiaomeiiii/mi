@@ -17,7 +17,11 @@
       </view>
       <view class="right">
         <scroll-view class="rightScroll" style="height: 100vh" scroll-y="true">
-          <view class="item" v-for="(item, i) in list" :key="i">
+          <view
+            class="item"
+            v-for="(item, i) in list[currentIndex].list"
+            :key="i"
+          >
             <image :src="item.src" />
             <text class="d-block">{{ item.name }}</text>
           </view>
@@ -38,7 +42,9 @@ export default {
       value: '小妹',
       cate: [],
       list: [],
-      currentIndex: 0
+      currentIndex: 0,
+      leftDomsTop: [],
+      rightDomsTop: []
     }
   },
   onLoad(options) {
@@ -46,11 +52,17 @@ export default {
       this.cate.push({
         name: `分类${i}`
       })
-
       this.list.push({
-        src: '/static/images/demo/cate_03.png',
-        name: `商品${i}`
+        list: []
       })
+    }
+    for (let i = 0; i < this.list.length; i++) {
+      for (let j = 0; j <= 24; j++) {
+        this.list[i].list.push({
+          src: '/static/images/demo/cate_03.png',
+          name: `商品${i}商品${j}`
+        })
+      }
     }
   },
   methods: {
