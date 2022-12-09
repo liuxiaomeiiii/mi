@@ -67,20 +67,18 @@ export default {
   },
   onReady() {
     const query = uni.createSelectorQuery().in(this)
-    let left = []
-    let right = []
     query
       .selectAll('.left-scroll-item')
       .boundingClientRect(data => {
-        left = data.map(item => item.top)
-        console.log('left', left)
+        this.scrollLeftTop = data.map(item => item.top)
+        console.log('left', this.scrollLeftTop)
       })
       .exec()
     query
       .selectAll('.right-scroll-item')
       .boundingClientRect(data => {
-        right = data.map(item => item.top)
-        console.log('right', right)
+        this.scrollRightTop = data.map(item => item.top)
+        console.log('right', this.scrollLeftTop)
       })
       .exec()
   },
