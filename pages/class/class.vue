@@ -3,9 +3,9 @@
     <search-header v-model="value" @search="search"></search-header>
     <view class="classification">
       <view class="left">
-        <scroll-view class="leftScroll" style="height: 100vh" scroll-y="true">
+        <scroll-view class="left-scroll" style="height: 100vh" scroll-y="true">
           <view
-            class="item"
+            class="item left-scroll-item"
             :class="currentIndex === i ? 'current' : ''"
             @click="currentIndex = i"
             v-for="(item, i) in cate"
@@ -16,9 +16,9 @@
         </scroll-view>
       </view>
       <view class="right">
-        <scroll-view class="rightScroll" style="height: 100vh" scroll-y="true">
+        <scroll-view class="right-scroll" style="height: 100vh" scroll-y="true">
           <view
-            class="item"
+            class="item right-scroll-item"
             v-for="(item, i) in list[currentIndex].list"
             :key="i"
           >
@@ -43,8 +43,8 @@ export default {
       cate: [],
       list: [],
       currentIndex: 0,
-      leftDomsTop: [],
-      rightDomsTop: []
+      scrollLeftTop: [],
+      scrollRightTop: []
     }
   },
   onLoad(options) {
@@ -64,6 +64,25 @@ export default {
         })
       }
     }
+  },
+  onReady() {
+    const query = uni.createSelectorQuery().in(this)
+    let left = []
+    let right = []
+    query
+      .selectAll('.left-scroll-item')
+      .boundingClientRect(data => {
+        left = data.map(item => item.top)
+        console.log('left', left)
+      })
+      .exec()
+    query
+      .selectAll('.right-scroll-item')
+      .boundingClientRect(data => {
+        right = data.map(item => item.top)
+        console.log('right', right)
+      })
+      .exec()
   },
   methods: {
     search() {
