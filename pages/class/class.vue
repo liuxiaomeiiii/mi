@@ -3,27 +3,40 @@
     <search-header v-model="value" @search="search"></search-header>
     <view class="classification">
       <view class="left">
-        <scroll-view class="left-scroll" style="height: 100vh" scroll-y="true">
+        <scroll-view class="left-scroll" scroll-y style="height: 100vh">
           <view
             class="item left-scroll-item"
             :class="currentIndex === i ? 'current' : ''"
-            @click="currentIndex = i"
             v-for="(item, i) in cate"
             :key="i"
+            @click="changeCate(i)"
           >
             {{ item.name }}
           </view>
         </scroll-view>
       </view>
       <view class="right">
-        <scroll-view class="right-scroll" style="height: 100vh" scroll-y="true">
+        <scroll-view
+          class="right-scroll"
+          style="height: 100vh"
+          scroll-y
+          :scroll-top="rightScrollTop"
+          :scroll-with-animation="true"
+          @scroll="onRightScroll"
+        >
           <view
-            class="item right-scroll-item"
-            v-for="(item, i) in list[currentIndex].list"
-            :key="i"
+            class="right-scroll-item"
+            v-for="(item, index) in list"
+            :key="index"
           >
-            <image :src="item.src" />
-            <text class="d-block">{{ item.name }}</text>
+            <view
+              class="item"
+              v-for="(item2, index2) in item.list"
+              :key="index2"
+            >
+              <image :src="item2.src" />
+              <text class="d-block">{{ item2.name }}</text>
+            </view>
           </view>
         </scroll-view>
       </view>
@@ -43,8 +56,10 @@ export default {
       cate: [],
       list: [],
       currentIndex: 0,
-      scrollLeftTop: [],
-      scrollRightTop: []
+      leftDomsTop: [],
+      rightDomsTop: [],
+      leftScrollTop: 0,
+      rightScrollTop: 100
     }
   },
   onLoad(options) {
@@ -70,21 +85,35 @@ export default {
     query
       .selectAll('.left-scroll-item')
       .boundingClientRect(data => {
-        this.scrollLeftTop = data.map(item => item.top)
-        console.log('left', this.scrollLeftTop)
+        this.leftDomsTop = data.map(item => item.top)
+        console.log('left', this.leftDomsTop)
       })
       .exec()
     query
       .selectAll('.right-scroll-item')
       .boundingClientRect(data => {
-        this.scrollRightTop = data.map(item => item.top)
-        console.log('right', this.scrollLeftTop)
+        this.rightDomsTop = data.map(item => item.top)
       })
       .exec()
   },
   methods: {
     search() {
       console.log(this.value)
+    },
+    changeCate(index) {
+      this.currentIndex = index
+      // 右边scroll-view滚动到对应区块
+      this.rightScrollTop = this.rightDomsTop[index] - this.rightDomsTop[0]
+      console.log('---', this.rightScrollTop)
+    },
+    onRightScroll(e) {
+      const scrollTop = e.detail.scrollTop
+      this.rightDomsTop.forEach((item, index) => {
+        if (item < scrollTop) {
+          this.currentIndex = index
+          return
+        }
+      })
     }
   }
 }
